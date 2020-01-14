@@ -298,6 +298,20 @@ def ManagerView(parent):
     
     window.mainloop()
     
+def showStats(scores,stats):
+    #scores = tk.Tk() 
+    label = tk.Label(scores, text="Game Scores", font=("Arial",30)).grid(row=3, columnspan=3)
+    # create Treeview with 3 columns
+    cols = ('ID', 'Name', 'Average Wrong Answer', 'Average Spell Mistakes','Game Played')
+    listBox = ttk.Treeview(scores, columns=cols, show='headings')
+    # set column headings
+    for col in cols:    
+        listBox.heading(col, text=col)  
+    for x in stats:
+       listBox.insert("", "end", values=(x['ID'], x['Name'], x['AerageOfWAs'],x['AerageOfSMs'],x['GamePlayed']))
+    listBox.grid(row=4, column=0, columnspan=2)
+
+    scores.mainloop()
 homePage(0)
 time.sleep(11)
 
