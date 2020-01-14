@@ -24,8 +24,8 @@ usr4 = {'ID':4,'Password':'4','Name': 'Chen','User':'Parent', 'AerageOfWAs':0,'A
 usr5 = {'ID':5,'Password':'5','Name': 'Yaniv','User':'Manager', 'AerageOfWAs':0,'AerageOfSMs':0,'GamePlayed':0,'ParentID':0}
 usr6 = {'ID':6,'Password':'6','Name': 'Itay','User':'Parent', 'AerageOfWAs':0,'AerageOfSMs':0,'GamePlayed':0,'ParentID':4}
 
-#unit test!
-class testDB(unittest.TestCase):
+
+class testDB(unittest.TestCase): #unit test! of defult users 
     #testing test
     def test1(self): 
         self.assertEqual(1,1)
@@ -69,6 +69,20 @@ class testDB(unittest.TestCase):
         self.assertEqual(usr5['User'],'Manager')
     def test_role6(self):
         self.assertEqual(usr6['User'],'Parent')
+      
+    #test users Name and ID
+    def test_usr1(self):
+        self.assertTrue((usr1['Name'] == 'Avi') and (usr1['ID'] == 1))
+    def test_usr2(self):
+        self.assertTrue((usr2['Name'] == 'Yossi') and (usr2['ID'] == 2))
+    def test_usr3(self):
+        self.assertTrue((usr3['Name'] == 'Natan') and (usr3['ID'] == 3))
+    def test_usr4(self):
+        self.assertTrue((usr4['Name'] == 'Chen') and (usr4['ID'] == 4))
+    def test_usr5(self):
+        self.assertTrue((usr5['Name'] == 'Yaniv') and (usr5['ID'] == 5))
+    def test_usr6(self):
+        self.assertTrue((usr6['Name'] == 'Itay') and (usr6['ID'] == 6))
 
 
 #Insert 4 reords into our todo list database
