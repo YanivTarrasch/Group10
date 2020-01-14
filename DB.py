@@ -55,7 +55,20 @@ class testDB(unittest.TestCase):
         self.assertNotIn({'ID':1,'Question':'Who we gonna call?? ','Answer': 'GhostBusters!','Points':3},tbq)
     def test_Not_Q5(self):
         self.assertNotIn({'ID':2,'Question':'what is the first rule in fightClub? ','Answer': 'You dont talk about fightClub','Points':3},tbq) 
-
+      
+    #test users role
+    def test_role1(self):
+        self.assertEqual(usr1['User'],'Player')
+    def test_role2(self):
+        self.assertEqual(usr2['User'],'Player')
+    def test_role3(self):
+        self.assertEqual(usr3['User'],'Player')
+    def test_role4(self):
+        self.assertEqual(usr4['User'],'Parent')
+    def test_role5(self):
+        self.assertEqual(usr5['User'],'Manager')
+    def test_role6(self):
+        self.assertEqual(usr6['User'],'Parent')
 
 
 #Insert 4 reords into our todo list database
