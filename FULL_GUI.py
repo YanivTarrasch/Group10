@@ -128,6 +128,27 @@ def login_command(wid): #Login Window, this is the GUI after the main menu that 
 
         wid.destroy()
         window.mainloop()
+        
+def onClick(name,pwd,wind):
+     usr=Query()
+     
+     rs=tb.search((usr.Name == name) & (usr.Password==pwd))
+    
+     print (rs)
+     if rs!=[] and rs[0]['User']=='Player':
+         player=User(rs)
+         firstchoices_command(player)
+         wind.destroy()
+     elif rs!=[] and rs[0]['User']=='Manager':
+         player=User(rs)
+         ManagerView(player)
+         wind.destroy()
+     elif rs!=[] and rs[0]['User']=='Parent':
+         player=User(rs)
+         parentView(player)
+         wind.destroy()
+     else:
+         loginError() 
     
 def parentView(parent):
     window=Tk()
