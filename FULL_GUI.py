@@ -7,3 +7,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
+def parentView(parent):
+    window=Tk()
+   
+    id=parent.id
