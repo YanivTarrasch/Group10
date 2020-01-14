@@ -150,6 +150,46 @@ def onClick(name,pwd,wind):
      else:
          loginError() 
     
+def insertPlayer(name,pwd,id,pid): #Insert a new Player To database
+    w=Tk()
+    w.geometry("0x0")
+    if len(name)<1 or len(pwd)<1 or len(pid)<1:
+           messagebox.showerror(title='Failure', message='Please Fill All Fields')
+           w.destroy()
+           return
+    if( ptb.search(query.ID==int(pid))==[]):
+      
+       messagebox.showerror(title='Error', message='Parent With Given ID not exist')
+
+    elif( tb.search(query.ID==int(id))!=[]):
+      
+       messagebox.showerror(title='Error', message='User With Given ID already exist')
+        
+    else:
+        usr = {'ID':int(id),'Password':pwd,'Name': name,'User':'Player', 'AerageOfWAs': 0,'AerageOfSMs':0,'GamePlayed':0,'ParentID':int(pid)}
+        tb.insert(usr)
+        def msg():
+            
+            tk.messagebox.showinfo(title='Success', message='Player Successfuly Registered')
+        msg()
+    w.destroy()#Creates Player
+    
+def insertParent(name,pwd,id):#Insert a new Parent To database
+        w=Tk()
+        w.geometry("0x0")
+        if len(name)<1 or len(pwd)<1:
+           messagebox.showerror(title='Failure', message='Please Fill All Fields')
+           w.destroy()
+           return
+    
+        usr = {'ID':int(id),'Password':pwd,'Name': name,'User':'Parent', 'AerageOfWAs': 0,'AerageOfSMs':0,'GamePlayed':0,'ParentID':0}
+        parent = {'ID':int(id),'Name': name,'Child':[]}
+        tb.insert(usr)
+        ptb.insert(parent)
+       
+        messagebox.showinfo(title='Success', message='Parent Successfuly Registered')
+        w.destroy()#Creates Parent
+
 def parentView(parent):
     window=Tk()
    

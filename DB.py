@@ -31,29 +31,31 @@ class testDB(unittest.TestCase):
         self.assertEqual(1,1)
     def test2(self):
         self.assertNotEqual(1,5)
+        
      #test Question In tbq
     def test_Q1(self):
         self.assertIn(Q1,tbq)
     def test_Q2(self):
         self.assertIn(Q2,tbq)
 
+
 #Insert 4 reords into our todo list database
 
-tbq.insert(Q1)
-tbq.insert(Q2)
-tbq.insert(Q3)
-tbq.insert(Q4)
-tbq.insert(Q5)
+#tbq.insert(Q1)
+#tbq.insert(Q2)
+#tbq.insert(Q3)
+#tbq.insert(Q4)
+#tbq.insert(Q5)
 
-tb.insert(usr1)
-tb.insert(usr2)
-tb.insert(usr3)
-tb.insert(usr4)
-tb.insert(usr5)
-tb.insert(usr6)
+#tb.insert(usr1)
+#tb.insert(usr2)
+#tb.insert(usr3)
+#tb.insert(usr4)
+#tb.insert(usr5)
+#tb.insert(usr6)
 
-tbp.insert(p1)
-tbp.insert(p2)
+#tbp.insert(p1)
+#tbp.insert(p2)
 
 #print(tb.all())
 #print(tbq.all())
