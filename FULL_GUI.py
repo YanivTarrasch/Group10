@@ -254,7 +254,43 @@ def Question_command(player,window,rv={'Score':0,'SpellMs':0,'Index':0,'QNo':0,'
             rs=tb.search(query.ID==player.id)
             player=User(rs)
             #firstchoices_command(player)// Lets see if it works without this "LOOP"
-    
+
+def Checker(ans,question,rv,win,player):
+    if rv['Index']==5:
+        return
+    misspelled = spell.unknown(ans)
+    print(misspelled)
+    print(spell.correction(ans))
+    print(question[1])
+    w=Tk()
+    w.geometry("0x0")
+    if(question[1].lower()==(spell.correction(ans)).lower()):
+        print(spell.correction(question[1]))
+        rv['Score']=rv['Score']+question[2]
+        #points
+        rv['Attempts']=0
+        rv['Index']=rv['Index']+1
+        rv['QNo']=rv['QNo']+1
+        if(ans.lower()!=question[1].lower() and question[1].lower()==(spell.correction(ans)).lower()):
+            rv['SpellMs']=rv['SpellMs']+1
+            rv['Score']=rv['Score']-1
+            #spell Mistakes
+        #else:
+            #rv['SpellMs']=0
+        messagebox.showinfo(title='Congrats!', message='Right Answer You Got: '+str(rv['Score'])+' Points'+' With Spell Mistakes: '+str(rv['SpellMs']))
+
+    else:
+        rv['Attempts']=rv['Attempts']+1
+        if(rv['Attempts']==3):
+            rv['WAns']=rv['WAns']+1
+            rv['Index']=rv['Index']+1
+        #Wrong Ans
+        messagebox.showinfo(title='Opps!', message='Wrong Answer You Left: '+str(3-rv['Attempts'])+' Chances')
+
+    print(rv)    
+    w.destroy()
+    Question_command(player,win,rv)            
+            
 def insertParent(name,pwd,id):#Insert a new Parent To database
         w=Tk()
         w.geometry("0x0")
