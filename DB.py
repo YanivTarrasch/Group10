@@ -43,6 +43,12 @@ class testDB(unittest.TestCase):
         self.assertIn(Q4,tbq)
     def test_Q5(self):
         self.assertIn(Q5,tbq)
+      
+    #test Question Not In tbq
+    def test_Not_Q1(self):
+        self.assertNotIn({'ID':6,'Question':'test test ','Answer': 'aaaaaaaaa','Points':5},tbq)
+    def test_Not_Q2(self):
+        self.assertNotIn({'ID':5,'Question':' is the top colour in a rainbow? ','Answer': 'gold','Points':3},tbq)
 
 
 
