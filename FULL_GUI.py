@@ -45,6 +45,7 @@ class User: #Class for the user player
 
         b1 = Button(window, text="Create Account", width=12, command=login_command)
         b1.grid(row=6, column=0)
+        
 def homePage(win):#Home page for login or signup choise    
 
     window = Tk()
@@ -76,6 +77,38 @@ def homePage(win):#Home page for login or signup choise
         win.destroy()
     window.mainloop()
 
+def login_command(wid): #Login Window, this is the GUI after the main menu that you login - NO SIGN UP HERE!!
+    
+        window = Tk()
+    
+        window.title("Login")
+        w,h=window.winfo_screenwidth() , window.winfo_screenheight()
+        window.geometry((str(int(w/4)) + 'x' + str(int(h/2)))+'+400+100')
+       
+        l1 = Label(window, text="Username")
+        l1.place(relx=0.5, rely=0.5,x=-35,y=-80,  anchor=CENTER)
+
+        l2 = Label(window, text="Password")
+        l2.place(relx=0.5, rely=0.5,x=-35,y=-40,  anchor=CENTER)
+
+        Username_text = StringVar()
+        e1 = Entry(window, textvariable=Username_text)
+        e1.place(relx=0.5, rely=0.5,x=0,y=-60,  anchor=CENTER)
+
+        Password_text = StringVar()
+        e2 = Entry(window, textvariable=Password_text,show='*')
+        e2.place(relx=0.5, rely=0.5,x=0,y=-20, anchor=CENTER)
+    
+        b3 = Button(window, text="Login", width=12,bg="gray", command=lambda:onClick(e1.get(),e2.get(),window))
+   # b3.grid(row=2, column=1)
+        b3.place(relx=0.5, rely=0.5,x=0,y=20, anchor=CENTER)
+
+        b2 = Button(window, text="Back", width=12,bg="gray", command=lambda:homePage(window))
+        b2.place(relx=0.5, rely=0.5,x=0,y=100, anchor=CENTER)
+
+        wid.destroy()
+        window.mainloop()
+    
 def parentView(parent):
     window=Tk()
    
