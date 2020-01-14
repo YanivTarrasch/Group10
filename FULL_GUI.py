@@ -75,7 +75,95 @@ def firstchoices_command(player):
    
     window.mainloop()
     
+def SignUp_command(wid): #Signup command for Child
+    
+        window = Tk()
+        
+        window.title("SignUp")
+        w,h=window.winfo_screenwidth() , window.winfo_screenheight()
+        window.geometry((str(int(w/4)) + 'x' + str(int(h/2)))+'+400+100')
+        
+        l4 = Label(window, text="ParentID")
+        l4.place(relx=0.5, rely=0.5,x=-35,y=-50,  anchor=CENTER)
+                
+        ParentID_text = StringVar()
+        e4 = Entry(window, textvariable=ParentID_text)
+        e4.place(relx=0.5, rely=0.5,x=0,y=-30,anchor=CENTER)
+        
+       
+        l1 = Label(window, text="Username")
+        l1.place(relx=0.5, rely=0.5,x=-35,y=-130,  anchor=CENTER)
 
+        l2 = Label(window, text="Password")
+        l2.place(relx=0.5, rely=0.5,x=-35,y=-90,  anchor=CENTER)
+
+        id=genrateID()
+
+        l3 = Label(window, text="ID : ")
+        l3.place(relx=0.5, rely=0.5,x=-50,y=-10,  anchor=CENTER)
+        e3 = Label(window, text=str(id))
+        e3.place(relx=0.5, rely=0.5,x=0,y=-10,anchor=CENTER)
+
+
+        
+        Username_text = StringVar()
+        e1 = Entry(window, textvariable=Username_text)
+        e1.place(relx=0.5, rely=0.5,x=0,y=-110,  anchor=CENTER)
+
+        Password_text = StringVar()
+        e2 = Entry(window, textvariable=Password_text,show='*')
+        e2.place(relx=0.5, rely=0.5,x=0,y=-70, anchor=CENTER)
+    
+        b2 = Button(window, text="Back", width=12,bg="gray", command=lambda:homePage(window))
+   
+        b2.place(relx=0.5, rely=0.5,x=0,y=100, anchor=CENTER)
+
+        b3 = Button(window, text="SignUp", width=12,bg="gray", command=lambda:insertPlayer(e1.get(),e2.get(),id,e4.get()))
+   # b3.grid(row=2, column=1)
+        b3.place(relx=0.5, rely=0.5,x=0,y=70, anchor=CENTER)
+
+        wid.destroy()
+        
+        
+def SignUp_command_P(wid):#Signup for parent GUI
+    
+        window = Tk()
+    
+        window.title("SighnUp")
+        w,h=window.winfo_screenwidth() , window.winfo_screenheight()
+        window.geometry((str(int(w/4)) + 'x' + str(int(h/2)))+'+400+100')
+        
+        l1 = Label(window, text="Username")
+        l1.place(relx=0.5, rely=0.5,x=-35,y=-130,  anchor=CENTER)
+
+        l2 = Label(window, text="Password")
+        l2.place(relx=0.5, rely=0.5,x=-35,y=-90,  anchor=CENTER)
+
+        l3 = Label(window, text="ID : ")
+        l3.place(relx=0.5, rely=0.5,x=-50,y=-10,  anchor=CENTER)
+        e3 = Label(window, text=str(genrateID()))
+        e3.place(relx=0.5, rely=0.5,x=0,y=-10,anchor=CENTER)
+
+        id=genrateID()
+        
+        Username_text = StringVar()
+        e1 = Entry(window, textvariable=Username_text)
+        e1.place(relx=0.5, rely=0.5,x=0,y=-110,  anchor=CENTER)
+
+        Password_text = StringVar()
+        e2 = Entry(window, textvariable=Password_text,show='*')
+        e2.place(relx=0.5, rely=0.5,x=0,y=-70, anchor=CENTER)
+        b2 = Button(window, text="Back", width=12,bg="gray", command=lambda:homePage(window))
+   
+        b2.place(relx=0.5, rely=0.5,x=0,y=100, anchor=CENTER)
+
+        b3 = Button(window, text="Signup", width=12,bg="gray", command=lambda:insertParent(e1.get(),e2.get(),id))
+   
+        b3.place(relx=0.5, rely=0.5,x=0,y=70, anchor=CENTER)
+
+        wid.destroy()
+       
+    
 def homePage(win):#Home page for login or signup choise    
 
     window = Tk()
@@ -254,7 +342,43 @@ def Question_command(player,window,rv={'Score':0,'SpellMs':0,'Index':0,'QNo':0,'
             rs=tb.search(query.ID==player.id)
             player=User(rs)
             #firstchoices_command(player)// Lets see if it works without this "LOOP"
-    
+
+def Checker(ans,question,rv,win,player):
+    if rv['Index']==5:
+        return
+    misspelled = spell.unknown(ans)
+    print(misspelled)
+    print(spell.correction(ans))
+    print(question[1])
+    w=Tk()
+    w.geometry("0x0")
+    if(question[1].lower()==(spell.correction(ans)).lower()):
+        print(spell.correction(question[1]))
+        rv['Score']=rv['Score']+question[2]
+        #points
+        rv['Attempts']=0
+        rv['Index']=rv['Index']+1
+        rv['QNo']=rv['QNo']+1
+        if(ans.lower()!=question[1].lower() and question[1].lower()==(spell.correction(ans)).lower()):
+            rv['SpellMs']=rv['SpellMs']+1
+            rv['Score']=rv['Score']-1
+            #spell Mistakes
+        #else:
+            #rv['SpellMs']=0
+        messagebox.showinfo(title='Congrats!', message='Right Answer You Got: '+str(rv['Score'])+' Points'+' With Spell Mistakes: '+str(rv['SpellMs']))
+
+    else:
+        rv['Attempts']=rv['Attempts']+1
+        if(rv['Attempts']==3):
+            rv['WAns']=rv['WAns']+1
+            rv['Index']=rv['Index']+1
+        #Wrong Ans
+        messagebox.showinfo(title='Opps!', message='Wrong Answer You Left: '+str(3-rv['Attempts'])+' Chances')
+
+    print(rv)    
+    w.destroy()
+    Question_command(player,win,rv)            
+            
 def insertParent(name,pwd,id):#Insert a new Parent To database
         w=Tk()
         w.geometry("0x0")
@@ -315,3 +439,29 @@ def showStats(scores,stats):
 homePage(0)
 time.sleep(11)
 
+def insertQuestion(Q,A,P):
+    
+    w=Tk()
+    w.geometry("0x0")
+    if len(Q)<1:
+            messagebox.showerror(title='Failure', message='PLease Add Question')
+            w.destroy()
+            return
+    if len(A)<1:
+            messagebox.showerror(title='Failure', message='PLease Add Answer')
+            w.destroy()
+            return
+    if len(P)<1:
+            messagebox.showerror(title='Failure', message='PLease Add Points')
+            w.destroy()
+            return
+    table=tb.search(query.ID!=[])
+    ids=[]
+    for i in table:
+        ids.append(i['ID'])
+    id= (max(ids))+1
+    Q1 = {'ID':id,'Question':Q,'Answer': A,'Points':int(P)}
+    qtb.insert(Q1)
+
+    messagebox.showinfo(title='Success', message='Question Added')
+    w.destroy()
