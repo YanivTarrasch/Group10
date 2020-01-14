@@ -422,7 +422,47 @@ def showStats(scores,stats): #Show statistics of game for parent\Manager
     listBox.grid(row=4, column=0, columnspan=2)
 
     scores.mainloop()    
+    
+    
+def Add_Question(): #adding question to the data base
+    
+        window = Tk()
         
+        window.title("Add Question")
+        w,h=window.winfo_screenwidth() , window.winfo_screenheight()
+        window.geometry((str(int(w/4)) + 'x' + str(int(h/2)))+'+400+100')
+        
+        l4 = Label(window, text="Points")
+        l4.place(relx=0.5, rely=0.5,x=-35,y=-50,  anchor=CENTER)
+                
+        Question_text = StringVar()
+        e4 = Entry(window, textvariable=Question_text)
+        e4.place(relx=0.5, rely=0.5,x=0,y=-30,anchor=CENTER)
+        
+       
+        l1 = Label(window, text="Question")
+        l1.place(relx=0.5, rely=0.5,x=-35,y=-130,  anchor=CENTER)
+
+        l2 = Label(window, text="Answer")
+        l2.place(relx=0.5, rely=0.5,x=-35,y=-90,  anchor=CENTER)
+        
+        Question_text = StringVar()
+        e1 = Entry(window, textvariable=Question_text)
+        e1.place(relx=0.5, rely=0.5,x=0,y=-110,  anchor=CENTER)
+
+        Points_text = StringVar()
+        e2 = Entry(window, textvariable=Points_text)
+        e2.place(relx=0.5, rely=0.5,x=0,y=-70, anchor=CENTER)
+    
+        b2 = Button(window, text="Back", width=12,bg="gray", command=lambda:window.destroy())
+   
+        b2.place(relx=0.5, rely=0.5,x=0,y=100, anchor=CENTER)
+
+        b3 = Button(window, text="Add", width=12,bg="gray", command=lambda:insertQuestion(e1.get(),e2.get(),e4.get()))
+   # b3.grid(row=2, column=1)
+        b3.place(relx=0.5, rely=0.5,x=0,y=70, anchor=CENTER)
+    
+    
 def insertQuestion(Q,A,P): 
     w=Tk()
     w.geometry("0x0")
