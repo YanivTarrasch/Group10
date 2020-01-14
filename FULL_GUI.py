@@ -7,6 +7,10 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
+#default DB with very first users and questions 
+#import DB
+
+
 def getConnection(str): #getting a connection to our DB
     db = TinyDB(str+'.json')
     return db
@@ -188,6 +192,68 @@ def insertPlayer(name,pwd,id,pid): #Insert a new Player To database
             tk.messagebox.showinfo(title='Success', message='Player Successfuly Registered')
         msg()
     w.destroy()#Creates Player
+
+def Question_command(player,window,rv={'Score':0,'SpellMs':0,'Index':0,'QNo':0,'WAns':0,'Attempts':0}): #shows 5 question and gives an oppertunity for 3 times
+        
+        score=rv['Score']
+        #window = Tk()
+       
+        if(rv['Index']<5):
+            questions=getQuestions()
+            attempts=3
+            ques=5
+            if(rv['Attempts'] in [0,3] ):
+                rv['Index']=rv['Index']%len(questions)
+                index= ((random()%((len(questions))-rv['Index']))+rv['Index'])
+                rv['Attempts']=0
+            else:
+                index=rv['Index']
+            l1 = Label(window, text="Question")
+            l1.place(relx=0.5, rely=0.5,x=-35,y=-80,  anchor=CENTER)
+
+            l2 = Label(window, text="Amswer")
+            l2.place(relx=0.5, rely=0.5,x=-35,y=-40,  anchor=CENTER)
+            
+            Username_text = StringVar()
+            S = tk.Scrollbar(window)
+           
+            l3 = Text(window)
+            l3.place(relx=0.5, width=window.winfo_width()-5, rely=0.5,x=0,y=-60,  anchor=CENTER)
+            l3.insert( tk.END,questions[int(index)][0])
+            
+            l4 = Label(window,bg='gray', text='Score: '+str(score))
+            l4.place( relx=0.5, rely=0,x=0,y=0)
+       
+            Password_text = StringVar()
+            e2 = Entry(window, textvariable=Password_text)
+            e2.place(relx=0.5, rely=0.5,x=0,y=-20, anchor=CENTER)
+        
+            b2 = Button(window, text="LogOut", width=12,bg="blue", command=lambda:homePage(window))
+            b2.place(relx=1, rely=0,x=-50,y=15, anchor=CENTER)
+            b3 = Button(window, text="Submit", width=12,bg="gray", command=lambda:Checker(e2.get(),questions[int(index)],rv,window,player))
+            b3.place(relx=0.5, rely=0.5,x=0,y=20, anchor=CENTER)
+        else:
+            w=Tk()
+            w.geometry("0x0")
+            p=tb.search(query.ID==player.id)[0]
+            print(p)
+            GP=p['GamePlayed']
+            if GP==0:
+                GP=1
+            update={'AerageOfWAs':((p['AerageOfWAs']*p['GamePlayed'])+rv['WAns'])/GP, 
+                      'AerageOfSMs':((p['AerageOfSMs']*p['GamePlayed'])+rv['SpellMs'])/GP,
+                      'GamePlayed':(p['GamePlayed']+1)}
+            tb.update(update,query.ID==p['ID'])
+            messagebox.showinfo(title='Game Over', message='You Score: '+str(score)+' Points'+' With Spell Mistakes: '+str(rv['SpellMs']))
+            print(rv)
+            w.destroy()
+            window.destroy()
+            rv.update({'Score':0,'SpellMs':0,'Index':0,'QNo':0,'WAns':0,'Attempts':0})
+            
+            print(rv)
+            rs=tb.search(query.ID==player.id)
+            player=User(rs)
+            #firstchoices_command(player)// Lets see if it works without this "LOOP"
     
 def insertParent(name,pwd,id):#Insert a new Parent To database
         w=Tk()
@@ -206,9 +272,7 @@ def insertParent(name,pwd,id):#Insert a new Parent To database
         w.destroy()#Creates Parent
 
 def parentView(parent):#GUI For parent to see childs info
-
     window=Tk()
-   
     id=parent.id
     b1 = Button(window, text="Make Question", width=12,bg="gray", command=lambda:Add_Question())
     #b1.place(relx=0, rely=0,x=-50,y=15)
@@ -219,10 +283,10 @@ def parentView(parent):#GUI For parent to see childs info
     p=tb.search((query.User=='Player')&(query.ParentID==parent.id))
     showStats(window,p)
     window.mainloop()
+    
 def ManagerView(parent):
     window=Tk()
     id=4
-    
     b1 = Button(window, text="Make Question", width=12,bg="gray", command=lambda:Add_Question())
     #b1.place(relx=0, rely=0,x=-50,y=15)
     b1.grid(row=1,column=0)
@@ -234,6 +298,20 @@ def ManagerView(parent):
     
     window.mainloop()
     
+def showStats(scores,stats):
+    #scores = tk.Tk() 
+    label = tk.Label(scores, text="Game Scores", font=("Arial",30)).grid(row=3, columnspan=3)
+    # create Treeview with 3 columns
+    cols = ('ID', 'Name', 'Average Wrong Answer', 'Average Spell Mistakes','Game Played')
+    listBox = ttk.Treeview(scores, columns=cols, show='headings')
+    # set column headings
+    for col in cols:    
+        listBox.heading(col, text=col)  
+    for x in stats:
+       listBox.insert("", "end", values=(x['ID'], x['Name'], x['AerageOfWAs'],x['AerageOfSMs'],x['GamePlayed']))
+    listBox.grid(row=4, column=0, columnspan=2)
+
+    scores.mainloop()
 homePage(0)
 time.sleep(11)
 
