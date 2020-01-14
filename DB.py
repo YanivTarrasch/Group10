@@ -44,11 +44,6 @@ tb.insert(usr6)
 tbp.insert(p1)
 tbp.insert(p2)
 
-#db.insert(Item1)
-#db.insert(Item2)
-#db.insert(Item3)
-#db.insert({'Status':'New','DueDate': '5/14/18', 'Category': 'Work','Description':'Request a Promotion'})
- 
 #print(tb.all())
 #print(tbq.all())
 #print(tbp.all())
