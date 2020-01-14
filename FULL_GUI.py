@@ -241,3 +241,29 @@ def ManagerView(parent):
 homePage(0)
 time.sleep(11)
 
+def insertQuestion(Q,A,P):
+    
+    w=Tk()
+    w.geometry("0x0")
+    if len(Q)<1:
+            messagebox.showerror(title='Failure', message='PLease Add Question')
+            w.destroy()
+            return
+    if len(A)<1:
+            messagebox.showerror(title='Failure', message='PLease Add Answer')
+            w.destroy()
+            return
+    if len(P)<1:
+            messagebox.showerror(title='Failure', message='PLease Add Points')
+            w.destroy()
+            return
+    table=tb.search(query.ID!=[])
+    ids=[]
+    for i in table:
+        ids.append(i['ID'])
+    id= (max(ids))+1
+    Q1 = {'ID':id,'Question':Q,'Answer': A,'Points':int(P)}
+    qtb.insert(Q1)
+
+    messagebox.showinfo(title='Success', message='Question Added')
+    w.destroy()
