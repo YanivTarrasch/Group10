@@ -49,7 +49,13 @@ class User: #Class for the user player
         b1 = Button(window, text="Create Account", width=12, command=login_command)
         b1.grid(row=6, column=0)
        
-      
+def getQuestions():
+      qtb=mdb.table('Questions')
+      questions=[]
+      for Q in qtb:
+          questions.append([Q['Question'],Q['Answer'],Q['Points']])
+      return questions      
+
 def firstchoices_command(player):
 
     window = Tk()
