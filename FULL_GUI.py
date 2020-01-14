@@ -228,6 +228,7 @@ def ManagerView(parent):
     
     window.mainloop()
     
+def showStats(scores,stats):
 homePage(0)
 time.sleep(11)
 
