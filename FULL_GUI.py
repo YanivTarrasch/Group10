@@ -45,7 +45,24 @@ class User: #Class for the user player
 
         b1 = Button(window, text="Create Account", width=12, command=login_command)
         b1.grid(row=6, column=0)
-        
+       
+      
+def firstchoices_command(player):
+
+    window = Tk()
+    window.title("TRIVIX")
+    w,h=window.winfo_screenwidth() , window.winfo_screenheight()
+
+    window.geometry((str(int(w)) + 'x' + str(int(h)))+'+0+0')
+#window.geometry((str(int(w/4)) + 'x' + str(int(h/2)))+'+400+100')
+
+    b1 = Button(window, text="Play Game", width=12, command=lambda:Question_command(player,window))
+    b1.grid(row=1, column=1)
+
+   
+    window.mainloop()
+    
+
 def homePage(win):#Home page for login or signup choise    
 
     window = Tk()
@@ -136,3 +153,7 @@ def ManagerView(parent):
     showStats(window,p)
     
     window.mainloop()
+    
+homePage(0)
+time.sleep(11)
+
