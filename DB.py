@@ -6,3 +6,11 @@ from tinydb import TinyDB, Query
 def getConnection(str):
     db = TinyDB(str+'.json')
     return db
+
+
+
+db=getConnection('Game')
+#db=getConnection('myDB')
+tb=db.table('User')
+tbq=db.table('Questions')
+tbp=db.table('Parent')
