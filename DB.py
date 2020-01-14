@@ -30,7 +30,7 @@ class testDB(unittest.TestCase):
     def test1(self): 
         self.assertEqual(1,1)
     def test2(self):
-        self.assertEqual(1,5)
+        self.assertNotEqual(1,5)
      #test Question In tbq
     def test_Q1(self):
         self.assertIn(Q1,tb)
