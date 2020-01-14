@@ -11,12 +11,12 @@ def getConnection(str):
 
 db=getConnection('Game')
 #db=getConnection('myDB')
-tb=db.table('User')
-tbq=db.table('Questions')
-tbp=db.table('Parent')
+tb=db.table('User') #user table
+tbq=db.table('Questions') #Question table
+tbp=db.table('Parent') #parent table
 
 
-
+#default users
 usr1 = {'ID':1,'Password':'1','Name': 'Avi','User':'Player', 'AerageOfWAs': 0,'AerageOfSMs':0,'GamePlayed':0,'ParentID':4}
 usr2 = {'ID':2,'Password':'2','Name': 'Yossi','User':'Player', 'AerageOfWAs': 0,'AerageOfSMs':0,'GamePlayed':0,'ParentID':4}
 usr3 = {'ID':3,'Password':'3','Name': 'Natan','User':'Player', 'AerageOfWAs':0,'AerageOfSMs':0,'GamePlayed':0,'ParentID':6}
@@ -24,8 +24,8 @@ usr4 = {'ID':4,'Password':'4','Name': 'Chen','User':'Parent', 'AerageOfWAs':0,'A
 usr5 = {'ID':5,'Password':'5','Name': 'Yaniv','User':'Manager', 'AerageOfWAs':0,'AerageOfSMs':0,'GamePlayed':0,'ParentID':0}
 usr6 = {'ID':6,'Password':'6','Name': 'Itay','User':'Parent', 'AerageOfWAs':0,'AerageOfSMs':0,'GamePlayed':0,'ParentID':4}
 
-#unit test!
-class testDB(unittest.TestCase):
+
+class testDB(unittest.TestCase): #unit test! of default users 
     #testing test
     def test1(self): 
         self.assertEqual(1,1)
@@ -37,7 +37,67 @@ class testDB(unittest.TestCase):
         self.assertIn(Q1,tbq)
     def test_Q2(self):
         self.assertIn(Q2,tbq)
-
+    def test_Q3(self):
+        self.assertIn(Q3,tbq)
+    def test_Q4(self):
+        self.assertIn(Q4,tbq)
+    def test_Q5(self):
+        self.assertIn(Q5,tbq)
+      
+    #test Question Not In tbq
+    def test_Not_Q1(self):
+        self.assertNotIn({'ID':6,'Question':'test test ','Answer': 'aaaaaaaaa','Points':5},tbq)
+    def test_Not_Q2(self):
+        self.assertNotIn({'ID':5,'Question':' is the top colour in a rainbow? ','Answer': 'gold','Points':3},tbq)
+    def test_Not_Q3(self):
+        self.assertNotIn({'ID':7,'Question':'Who are You?? ','Answer': 'im IronMan!!!!!','Points':3},tbq)
+    def test_Not_Q4(self):
+        self.assertNotIn({'ID':1,'Question':'Who we gonna call?? ','Answer': 'GhostBusters!','Points':3},tbq)
+    def test_Not_Q5(self):
+        self.assertNotIn({'ID':2,'Question':'what is the first rule in fightClub? ','Answer': 'You dont talk about fightClub','Points':3},tbq) 
+      
+    #test users role
+    def test_role1(self):
+        self.assertEqual(usr1['User'],'Player')
+    def test_role2(self):
+        self.assertEqual(usr2['User'],'Player')
+    def test_role3(self):
+        self.assertEqual(usr3['User'],'Player')
+    def test_role4(self):
+        self.assertEqual(usr4['User'],'Parent')
+    def test_role5(self):
+        self.assertEqual(usr5['User'],'Manager')
+    def test_role6(self):
+        self.assertEqual(usr6['User'],'Parent')
+      
+    #test users Name and ID
+    def test_usr1(self):
+        self.assertTrue((usr1['Name'] == 'Avi') and (usr1['ID'] == 1))
+    def test_usr2(self):
+        self.assertTrue((usr2['Name'] == 'Yossi') and (usr2['ID'] == 2))
+    def test_usr3(self):
+        self.assertTrue((usr3['Name'] == 'Natan') and (usr3['ID'] == 3))
+    def test_usr4(self):
+        self.assertTrue((usr4['Name'] == 'Chen') and (usr4['ID'] == 4))
+    def test_usr5(self):
+        self.assertTrue((usr5['Name'] == 'Yaniv') and (usr5['ID'] == 5))
+    def test_usr6(self):
+        self.assertTrue((usr6['Name'] == 'Itay') and (usr6['ID'] == 6))
+      
+    #test Parent in tbp
+    def test_tbp1(self):
+        self.assertIn(p1,tbp)
+    def test_tbp2(self):
+        self.assertIn(p2,tbp)
+      
+    #test Parent , child
+    def test_par1(self):
+        self.assertEqual(p1['child'],[1,2])
+    def test_par2(self):
+        self.assertEqual(p2['child'],[3])
+    
+ if __name__ == '__main__': 
+    unittest.main() #start unit test 
 
 #Insert 4 reords into our todo list database
 
