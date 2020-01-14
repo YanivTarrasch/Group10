@@ -89,6 +89,12 @@ class testDB(unittest.TestCase): #unit test! of defult users
         self.assertIn(p1,tbp)
     def test_tbp2(self):
         self.assertIn(p2,tbp)
+      
+    #test Parent , child
+    def test_par1(self):
+        self.assertEqual(p1['child'],[1,2])
+    def test_par2(self):
+        self.assertEqual(p2['child'],[3])
     
     
 
