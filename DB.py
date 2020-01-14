@@ -33,7 +33,9 @@ class testDB(unittest.TestCase):
         self.assertNotEqual(1,5)
      #test Question In tbq
     def test_Q1(self):
-        self.assertIn(Q1,tb)
+        self.assertIn(Q1,tbq)
+    def test_Q2(self):
+        self.assertIn(Q2,tbq)
 
 #Insert 4 reords into our todo list database
 
