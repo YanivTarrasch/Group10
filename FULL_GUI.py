@@ -7,6 +7,9 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
+def getConnection(str):
+    db = TinyDB(str+'.json')
+    return db
 
 class User: #Class for the user player
     def __init__(self,player): #Init players data
