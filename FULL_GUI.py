@@ -59,7 +59,12 @@ class User: #Class for the user player
         b1 = Button(window, text="Create Account", width=12, command=login_command)
         b1.grid(row=6, column=0)
 
-
+spell = SpellChecker()
+query=Query()
+mdb=getConnection('Game')
+tb=mdb.table('User')
+ptb=mdb.table('Parent')
+qtb=mdb.table('Questions')
 
 def ManagerView(parent):
     window=Tk()
