@@ -83,6 +83,14 @@ class testDB(unittest.TestCase): #unit test! of defult users
         self.assertTrue((usr5['Name'] == 'Yaniv') and (usr5['ID'] == 5))
     def test_usr6(self):
         self.assertTrue((usr6['Name'] == 'Itay') and (usr6['ID'] == 6))
+      
+    #test Parent in tbp
+    def test_tbp1(self):
+        self.assertIn(p1,tbp)
+    def test_tbp2(self):
+        self.assertIn(p2,tbp)
+    
+    
 
 
 #Insert 4 reords into our todo list database
