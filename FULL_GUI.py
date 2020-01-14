@@ -7,6 +7,9 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
+#default DB with very first users and questions 
+#import DB
+
 def getConnection(str):
     db = TinyDB(str+'.json')
     return db
