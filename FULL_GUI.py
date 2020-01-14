@@ -75,7 +75,95 @@ def firstchoices_command(player):
    
     window.mainloop()
     
+def SignUp_command(wid): #Signup command for Child
+    
+        window = Tk()
+        
+        window.title("SignUp")
+        w,h=window.winfo_screenwidth() , window.winfo_screenheight()
+        window.geometry((str(int(w/4)) + 'x' + str(int(h/2)))+'+400+100')
+        
+        l4 = Label(window, text="ParentID")
+        l4.place(relx=0.5, rely=0.5,x=-35,y=-50,  anchor=CENTER)
+                
+        ParentID_text = StringVar()
+        e4 = Entry(window, textvariable=ParentID_text)
+        e4.place(relx=0.5, rely=0.5,x=0,y=-30,anchor=CENTER)
+        
+       
+        l1 = Label(window, text="Username")
+        l1.place(relx=0.5, rely=0.5,x=-35,y=-130,  anchor=CENTER)
 
+        l2 = Label(window, text="Password")
+        l2.place(relx=0.5, rely=0.5,x=-35,y=-90,  anchor=CENTER)
+
+        id=genrateID()
+
+        l3 = Label(window, text="ID : ")
+        l3.place(relx=0.5, rely=0.5,x=-50,y=-10,  anchor=CENTER)
+        e3 = Label(window, text=str(id))
+        e3.place(relx=0.5, rely=0.5,x=0,y=-10,anchor=CENTER)
+
+
+        
+        Username_text = StringVar()
+        e1 = Entry(window, textvariable=Username_text)
+        e1.place(relx=0.5, rely=0.5,x=0,y=-110,  anchor=CENTER)
+
+        Password_text = StringVar()
+        e2 = Entry(window, textvariable=Password_text,show='*')
+        e2.place(relx=0.5, rely=0.5,x=0,y=-70, anchor=CENTER)
+    
+        b2 = Button(window, text="Back", width=12,bg="gray", command=lambda:homePage(window))
+   
+        b2.place(relx=0.5, rely=0.5,x=0,y=100, anchor=CENTER)
+
+        b3 = Button(window, text="SignUp", width=12,bg="gray", command=lambda:insertPlayer(e1.get(),e2.get(),id,e4.get()))
+   # b3.grid(row=2, column=1)
+        b3.place(relx=0.5, rely=0.5,x=0,y=70, anchor=CENTER)
+
+        wid.destroy()
+        
+        
+def SignUp_command_P(wid):#Signup for parent GUI
+    
+        window = Tk()
+    
+        window.title("SighnUp")
+        w,h=window.winfo_screenwidth() , window.winfo_screenheight()
+        window.geometry((str(int(w/4)) + 'x' + str(int(h/2)))+'+400+100')
+        
+        l1 = Label(window, text="Username")
+        l1.place(relx=0.5, rely=0.5,x=-35,y=-130,  anchor=CENTER)
+
+        l2 = Label(window, text="Password")
+        l2.place(relx=0.5, rely=0.5,x=-35,y=-90,  anchor=CENTER)
+
+        l3 = Label(window, text="ID : ")
+        l3.place(relx=0.5, rely=0.5,x=-50,y=-10,  anchor=CENTER)
+        e3 = Label(window, text=str(genrateID()))
+        e3.place(relx=0.5, rely=0.5,x=0,y=-10,anchor=CENTER)
+
+        id=genrateID()
+        
+        Username_text = StringVar()
+        e1 = Entry(window, textvariable=Username_text)
+        e1.place(relx=0.5, rely=0.5,x=0,y=-110,  anchor=CENTER)
+
+        Password_text = StringVar()
+        e2 = Entry(window, textvariable=Password_text,show='*')
+        e2.place(relx=0.5, rely=0.5,x=0,y=-70, anchor=CENTER)
+        b2 = Button(window, text="Back", width=12,bg="gray", command=lambda:homePage(window))
+   
+        b2.place(relx=0.5, rely=0.5,x=0,y=100, anchor=CENTER)
+
+        b3 = Button(window, text="Signup", width=12,bg="gray", command=lambda:insertParent(e1.get(),e2.get(),id))
+   
+        b3.place(relx=0.5, rely=0.5,x=0,y=70, anchor=CENTER)
+
+        wid.destroy()
+       
+    
 def homePage(win):#Home page for login or signup choise    
 
     window = Tk()
