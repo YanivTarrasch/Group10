@@ -7,6 +7,9 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
+def getConnection(str): #getting a connection to our DB
+    db = TinyDB(str+'.json')
+    return db
 
 class User: #Class for the user player
     def __init__(self,player): #Init players data
@@ -46,7 +49,13 @@ class User: #Class for the user player
         b1 = Button(window, text="Create Account", width=12, command=login_command)
         b1.grid(row=6, column=0)
        
-      
+def getQuestions():
+      qtb=mdb.table('Questions')
+      questions=[]
+      for Q in qtb:
+          questions.append([Q['Question'],Q['Answer'],Q['Points']])
+      return questions      
+
 def firstchoices_command(player):
 
     window = Tk()
@@ -125,7 +134,37 @@ def login_command(wid): #Login Window, this is the GUI after the main menu that 
 
         wid.destroy()
         window.mainloop()
+        
+def onClick(name,pwd,wind): 
+     usr=Query()
+     
+     rs=tb.search((usr.Name == name) & (usr.Password==pwd))
     
+     print (rs)
+     if rs!=[] and rs[0]['User']=='Player':
+         player=User(rs)
+         firstchoices_command(player)
+         wind.destroy()
+     elif rs!=[] and rs[0]['User']=='Manager':
+         player=User(rs)
+         ManagerView(player)
+         wind.destroy()
+     elif rs!=[] and rs[0]['User']=='Parent':
+         player=User(rs)
+         parentView(player)
+         wind.destroy()
+     else:
+         loginError() 
+    
+
+def genrateID():
+    #return max id to next insernt in DB
+    table=tb.search(query.ID!=[])
+    ids=[]
+    for i in table:
+        ids.append(i['ID'])
+        
+
 def insertPlayer(name,pwd,id,pid): #Insert a new Player To database
     w=Tk()
     w.geometry("0x0")
@@ -166,7 +205,8 @@ def insertParent(name,pwd,id):#Insert a new Parent To database
         messagebox.showinfo(title='Success', message='Parent Successfuly Registered')
         w.destroy()#Creates Parent
 
-def parentView(parent):
+def parentView(parent):#GUI For parent to see childs info
+
     window=Tk()
    
     id=parent.id

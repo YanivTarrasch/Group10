@@ -24,4 +24,39 @@ usr4 = {'ID':4,'Password':'4','Name': 'Chen','User':'Parent', 'AerageOfWAs':0,'A
 usr5 = {'ID':5,'Password':'5','Name': 'Yaniv','User':'Manager', 'AerageOfWAs':0,'AerageOfSMs':0,'GamePlayed':0,'ParentID':0}
 usr6 = {'ID':6,'Password':'6','Name': 'Itay','User':'Parent', 'AerageOfWAs':0,'AerageOfSMs':0,'GamePlayed':0,'ParentID':4}
 
+#unit test!
+class testDB(unittest.TestCase):
+    #testing test
+    def test1(self): 
+        self.assertEqual(1,1)
+    def test2(self):
+        self.assertNotEqual(1,5)
+        
+     #test Question In tbq
+    def test_Q1(self):
+        self.assertIn(Q1,tbq)
+    def test_Q2(self):
+        self.assertIn(Q2,tbq)
 
+
+#Insert 4 reords into our todo list database
+
+#tbq.insert(Q1)
+#tbq.insert(Q2)
+#tbq.insert(Q3)
+#tbq.insert(Q4)
+#tbq.insert(Q5)
+
+#tb.insert(usr1)
+#tb.insert(usr2)
+#tb.insert(usr3)
+#tb.insert(usr4)
+#tb.insert(usr5)
+#tb.insert(usr6)
+
+#tbp.insert(p1)
+#tbp.insert(p2)
+
+#print(tb.all())
+#print(tbq.all())
+#print(tbp.all())
