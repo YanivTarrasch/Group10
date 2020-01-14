@@ -58,3 +58,20 @@ class User: #Class for the user player
 
         b1 = Button(window, text="Create Account", width=12, command=login_command)
         b1.grid(row=6, column=0)
+
+
+
+def ManagerView(parent):
+    window=Tk()
+    id=4
+    
+    b1 = Button(window, text="Make Question", width=12,bg="gray", command=lambda:Add_Question())
+    #b1.place(relx=0, rely=0,x=-50,y=15)
+    b1.grid(row=1,column=0)
+    b2 = Button(window, text="LogOut", width=12,bg="blue", command=lambda:(window.destroy()))
+    #b2.place(relx=1,rely=0,x=-50,y=15)
+    b2.grid(row=1,column=1 )
+    p=tb.search((query.User=='Player'))
+    showStats(window,p)
+    
+    window.mainloop()
