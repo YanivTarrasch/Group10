@@ -150,6 +150,13 @@ def onClick(name,pwd,wind):
      else:
          loginError() 
     
+def genrateID():
+    #return max id to next insernt in DB
+    table=tb.search(query.ID!=[])
+    ids=[]
+    for i in table:
+        ids.append(i['ID'])
+        
 def insertPlayer(name,pwd,id,pid): #Insert a new Player To database
     w=Tk()
     w.geometry("0x0")
