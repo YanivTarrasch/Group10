@@ -52,13 +52,14 @@ class User: #Class for the user player
 
         b1 = Button(window, text="Create Account", width=12, command=login_command)
         b1.grid(row=6, column=0)
-       
-def getQuestions():
-      qtb=mdb.table('Questions')
-      questions=[]
-      for Q in qtb:
-          questions.append([Q['Question'],Q['Answer'],Q['Points']])
-      return questions      
+ 
+
+spell = SpellChecker() #SpellChecker Obj
+query=Query() #Query Obj (LIKE SQL)
+mdb=getConnection('Game') #obj
+tb=mdb.table('User') #obj table for user
+ptb=mdb.table('Parent')#obj table for parent
+qtb=mdb.table('Questions')#obj table for qeustions
 
 def firstchoices_command(player):
 
@@ -74,7 +75,146 @@ def firstchoices_command(player):
 
    
     window.mainloop()
+
+def homePage(win):#Home page for login or signup choise    
+
+    window = Tk()
+    window.title("Welcome to TRIVIX Game!!")
+    w,h=window.winfo_screenwidth() , window.winfo_screenheight()
+    window.geometry((str(int(w/4)) + 'x' + str(int(h/2)))+'+400+100')
+    b1 = Button(window, text="Log In", width=12,bg="gray", command=lambda:login_command(window))
+    b1.grid(row=1, column=1)
     
+    OPTIONS = ["Signup","Child","Parent"] #Example for menu option
+    variable = StringVar(window)
+    variable.set(OPTIONS[0]) # default value
+    
+    m = OptionMenu(window, variable, *OPTIONS)
+    m.place(relx=0.5, rely=0.5,x=0,y=40, anchor=CENTER)
+
+    def callback(*args):
+        if(variable.get())=="Child":
+            SignUp_command(window)
+        elif(variable.get())=="Parent":
+            SignUp_command_P(window)
+
+    variable.trace("w", callback)
+
+   
+    b1.place(relx=0.5, rely=0.5, anchor=CENTER)
+   
+    if(win!=0):
+        win.destroy()
+    window.mainloop()
+
+def login_command(wid): #Login Window, this is the GUI after the main menu that you login - NO SIGN UP HERE!!
+    
+        window = Tk()
+    
+        window.title("Login")
+        w,h=window.winfo_screenwidth() , window.winfo_screenheight()
+        window.geometry((str(int(w/4)) + 'x' + str(int(h/2)))+'+400+100')
+       
+        l1 = Label(window, text="Username")
+        l1.place(relx=0.5, rely=0.5,x=-35,y=-80,  anchor=CENTER)
+
+        l2 = Label(window, text="Password")
+        l2.place(relx=0.5, rely=0.5,x=-35,y=-40,  anchor=CENTER)
+
+        Username_text = StringVar()
+        e1 = Entry(window, textvariable=Username_text)
+        e1.place(relx=0.5, rely=0.5,x=0,y=-60,  anchor=CENTER)
+
+        Password_text = StringVar()
+        e2 = Entry(window, textvariable=Password_text,show='*')
+        e2.place(relx=0.5, rely=0.5,x=0,y=-20, anchor=CENTER)
+    
+        b3 = Button(window, text="Login", width=12,bg="gray", command=lambda:onClick(e1.get(),e2.get(),window))
+   # b3.grid(row=2, column=1)
+        b3.place(relx=0.5, rely=0.5,x=0,y=20, anchor=CENTER)
+
+        b2 = Button(window, text="Back", width=12,bg="gray", command=lambda:homePage(window))
+        b2.place(relx=0.5, rely=0.5,x=0,y=100, anchor=CENTER)
+
+        wid.destroy()
+        window.mainloop()
+       
+    
+def onClick(name,pwd,wind): 
+     usr=Query()
+     
+     rs=tb.search((usr.Name == name) & (usr.Password==pwd))
+    
+     print (rs)
+     if rs!=[] and rs[0]['User']=='Player':
+         player=User(rs)
+         firstchoices_command(player)
+         wind.destroy()
+     elif rs!=[] and rs[0]['User']=='Manager':
+         player=User(rs)
+         ManagerView(player)
+         wind.destroy()
+     elif rs!=[] and rs[0]['User']=='Parent':
+         player=User(rs)
+         parentView(player)
+         wind.destroy()
+     else:
+         loginError() 
+    
+def loginError(): #Login Error GUI if the user name and password is not correct
+    w=Tk()
+    w.geometry("0x0")
+    messagebox.showerror(title='Error', message='Incorect User Name or Password')
+    w.destroy()    
+ 
+def genrateID():
+    #return max id to next insernt in DB
+    table=tb.search(query.ID!=[])
+    ids=[]
+    for i in table:
+        ids.append(i['ID'])
+       
+    
+def insertPlayer(name,pwd,id,pid): #Insert a new Player To database
+    w=Tk()
+    w.geometry("0x0")
+    if len(name)<1 or len(pwd)<1 or len(pid)<1:
+           messagebox.showerror(title='Failure', message='Please Fill All Fields')
+           w.destroy()
+           return
+    if( ptb.search(query.ID==int(pid))==[]):
+      
+       messagebox.showerror(title='Error', message='Parent With Given ID not exist')
+
+    elif( tb.search(query.ID==int(id))!=[]):
+      
+       messagebox.showerror(title='Error', message='User With Given ID already exist')
+        
+    else:
+        usr = {'ID':int(id),'Password':pwd,'Name': name,'User':'Player', 'AerageOfWAs': 0,'AerageOfSMs':0,'GamePlayed':0,'ParentID':int(pid)}
+        tb.insert(usr)
+        def msg():
+            
+            tk.messagebox.showinfo(title='Success', message='Player Successfuly Registered')
+        msg()
+    w.destroy()#Creates Player        
+        
+def insertParent(name,pwd,id):#Insert a new Parent To database
+        w=Tk()
+        w.geometry("0x0")
+        if len(name)<1 or len(pwd)<1:
+           messagebox.showerror(title='Failure', message='Please Fill All Fields')
+           w.destroy()
+           return
+    
+        usr = {'ID':int(id),'Password':pwd,'Name': name,'User':'Parent', 'AerageOfWAs': 0,'AerageOfSMs':0,'GamePlayed':0,'ParentID':0}
+        parent = {'ID':int(id),'Name': name,'Child':[]}
+        tb.insert(usr)
+        ptb.insert(parent)
+       
+        messagebox.showinfo(title='Success', message='Parent Successfuly Registered')
+        w.destroy()#Creates Parent
+
 def SignUp_command(wid): #Signup command for Child
     
         window = Tk()
@@ -161,125 +301,14 @@ def SignUp_command_P(wid):#Signup for parent GUI
    
         b3.place(relx=0.5, rely=0.5,x=0,y=70, anchor=CENTER)
 
-        wid.destroy()
-       
+        wid.destroy()        
     
-def homePage(win):#Home page for login or signup choise    
-
-    window = Tk()
-    window.title("Welcome to TRIVIX Game!!")
-    w,h=window.winfo_screenwidth() , window.winfo_screenheight()
-    window.geometry((str(int(w/4)) + 'x' + str(int(h/2)))+'+400+100')
-    b1 = Button(window, text="Log In", width=12,bg="gray", command=lambda:login_command(window))
-    b1.grid(row=1, column=1)
-    
-    OPTIONS = ["Signup","Child","Parent"] #Example for menu option
-    variable = StringVar(window)
-    variable.set(OPTIONS[0]) # default value
-    
-    m = OptionMenu(window, variable, *OPTIONS)
-    m.place(relx=0.5, rely=0.5,x=0,y=40, anchor=CENTER)
-
-    def callback(*args):
-        if(variable.get())=="Child":
-            SignUp_command(window)
-        elif(variable.get())=="Parent":
-            SignUp_command_P(window)
-
-    variable.trace("w", callback)
-
-   
-    b1.place(relx=0.5, rely=0.5, anchor=CENTER)
-   
-    if(win!=0):
-        win.destroy()
-    window.mainloop()
-
-def login_command(wid): #Login Window, this is the GUI after the main menu that you login - NO SIGN UP HERE!!
-    
-        window = Tk()
-    
-        window.title("Login")
-        w,h=window.winfo_screenwidth() , window.winfo_screenheight()
-        window.geometry((str(int(w/4)) + 'x' + str(int(h/2)))+'+400+100')
-       
-        l1 = Label(window, text="Username")
-        l1.place(relx=0.5, rely=0.5,x=-35,y=-80,  anchor=CENTER)
-
-        l2 = Label(window, text="Password")
-        l2.place(relx=0.5, rely=0.5,x=-35,y=-40,  anchor=CENTER)
-
-        Username_text = StringVar()
-        e1 = Entry(window, textvariable=Username_text)
-        e1.place(relx=0.5, rely=0.5,x=0,y=-60,  anchor=CENTER)
-
-        Password_text = StringVar()
-        e2 = Entry(window, textvariable=Password_text,show='*')
-        e2.place(relx=0.5, rely=0.5,x=0,y=-20, anchor=CENTER)
-    
-        b3 = Button(window, text="Login", width=12,bg="gray", command=lambda:onClick(e1.get(),e2.get(),window))
-   # b3.grid(row=2, column=1)
-        b3.place(relx=0.5, rely=0.5,x=0,y=20, anchor=CENTER)
-
-        b2 = Button(window, text="Back", width=12,bg="gray", command=lambda:homePage(window))
-        b2.place(relx=0.5, rely=0.5,x=0,y=100, anchor=CENTER)
-
-        wid.destroy()
-        window.mainloop()
-        
-def onClick(name,pwd,wind): 
-     usr=Query()
-     
-     rs=tb.search((usr.Name == name) & (usr.Password==pwd))
-    
-     print (rs)
-     if rs!=[] and rs[0]['User']=='Player':
-         player=User(rs)
-         firstchoices_command(player)
-         wind.destroy()
-     elif rs!=[] and rs[0]['User']=='Manager':
-         player=User(rs)
-         ManagerView(player)
-         wind.destroy()
-     elif rs!=[] and rs[0]['User']=='Parent':
-         player=User(rs)
-         parentView(player)
-         wind.destroy()
-     else:
-         loginError() 
-    
-
-def genrateID():
-    #return max id to next insernt in DB
-    table=tb.search(query.ID!=[])
-    ids=[]
-    for i in table:
-        ids.append(i['ID'])
-        
-
-def insertPlayer(name,pwd,id,pid): #Insert a new Player To database
-    w=Tk()
-    w.geometry("0x0")
-    if len(name)<1 or len(pwd)<1 or len(pid)<1:
-           messagebox.showerror(title='Failure', message='Please Fill All Fields')
-           w.destroy()
-           return
-    if( ptb.search(query.ID==int(pid))==[]):
-      
-       messagebox.showerror(title='Error', message='Parent With Given ID not exist')
-
-    elif( tb.search(query.ID==int(id))!=[]):
-      
-       messagebox.showerror(title='Error', message='User With Given ID already exist')
-        
-    else:
-        usr = {'ID':int(id),'Password':pwd,'Name': name,'User':'Player', 'AerageOfWAs': 0,'AerageOfSMs':0,'GamePlayed':0,'ParentID':int(pid)}
-        tb.insert(usr)
-        def msg():
-            
-            tk.messagebox.showinfo(title='Success', message='Player Successfuly Registered')
-        msg()
-    w.destroy()#Creates Player
+def getQuestions():
+      qtb=mdb.table('Questions')
+      questions=[]
+      for Q in qtb:
+          questions.append([Q['Question'],Q['Answer'],Q['Points']])
+      return questions      
 
 def Question_command(player,window,rv={'Score':0,'SpellMs':0,'Index':0,'QNo':0,'WAns':0,'Attempts':0}): #shows 5 question and gives an oppertunity for 3 times
         
@@ -378,23 +407,48 @@ def Checker(ans,question,rv,win,player):
     print(rv)    
     w.destroy()
     Question_command(player,win,rv)            
-            
-def insertParent(name,pwd,id):#Insert a new Parent To database
-        w=Tk()
-        w.geometry("0x0")
-        if len(name)<1 or len(pwd)<1:
-           messagebox.showerror(title='Failure', message='Please Fill All Fields')
-           w.destroy()
-           return
-    
-        usr = {'ID':int(id),'Password':pwd,'Name': name,'User':'Parent', 'AerageOfWAs': 0,'AerageOfSMs':0,'GamePlayed':0,'ParentID':0}
-        parent = {'ID':int(id),'Name': name,'Child':[]}
-        tb.insert(usr)
-        ptb.insert(parent)
-       
-        messagebox.showinfo(title='Success', message='Parent Successfuly Registered')
-        w.destroy()#Creates Parent
 
+def showStats(scores,stats): #Show statistics of game for parent\Manager
+    #scores = tk.Tk() 
+    label = tk.Label(scores, text="Game Scores", font=("Arial",30)).grid(row=3, columnspan=3)
+    # create Treeview with 3 columns
+    cols = ('ID', 'Name', 'Average Wrong Answer', 'Average Spell Mistakes','Game Played')
+    listBox = ttk.Treeview(scores, columns=cols, show='headings')
+    # set column headings
+    for col in cols:    
+        listBox.heading(col, text=col)  
+    for x in stats:
+       listBox.insert("", "end", values=(x['ID'], x['Name'], x['AerageOfWAs'],x['AerageOfSMs'],x['GamePlayed']))
+    listBox.grid(row=4, column=0, columnspan=2)
+
+    scores.mainloop()    
+        
+def insertQuestion(Q,A,P): 
+    w=Tk()
+    w.geometry("0x0")
+    if len(Q)<1:
+            messagebox.showerror(title='Failure', message='PLease Add Question')
+            w.destroy()
+            return
+    if len(A)<1:
+            messagebox.showerror(title='Failure', message='PLease Add Answer')
+            w.destroy()
+            return
+    if len(P)<1:
+            messagebox.showerror(title='Failure', message='PLease Add Points')
+            w.destroy()
+            return
+    table=tb.search(query.ID!=[])
+    ids=[]
+    for i in table:
+        ids.append(i['ID'])
+    id= (max(ids))+1
+    Q1 = {'ID':id,'Question':Q,'Answer': A,'Points':int(P)}
+    qtb.insert(Q1)
+
+    messagebox.showinfo(title='Success', message='Question Added')
+    w.destroy()
+    
 def parentView(parent):#GUI For parent to see childs info
     window=Tk()
     id=parent.id
@@ -422,46 +476,7 @@ def ManagerView(parent):
     
     window.mainloop()
     
-def showStats(scores,stats):
-    #scores = tk.Tk() 
-    label = tk.Label(scores, text="Game Scores", font=("Arial",30)).grid(row=3, columnspan=3)
-    # create Treeview with 3 columns
-    cols = ('ID', 'Name', 'Average Wrong Answer', 'Average Spell Mistakes','Game Played')
-    listBox = ttk.Treeview(scores, columns=cols, show='headings')
-    # set column headings
-    for col in cols:    
-        listBox.heading(col, text=col)  
-    for x in stats:
-       listBox.insert("", "end", values=(x['ID'], x['Name'], x['AerageOfWAs'],x['AerageOfSMs'],x['GamePlayed']))
-    listBox.grid(row=4, column=0, columnspan=2)
 
-    scores.mainloop()
 homePage(0)
 time.sleep(11)
 
-def insertQuestion(Q,A,P):
-    
-    w=Tk()
-    w.geometry("0x0")
-    if len(Q)<1:
-            messagebox.showerror(title='Failure', message='PLease Add Question')
-            w.destroy()
-            return
-    if len(A)<1:
-            messagebox.showerror(title='Failure', message='PLease Add Answer')
-            w.destroy()
-            return
-    if len(P)<1:
-            messagebox.showerror(title='Failure', message='PLease Add Points')
-            w.destroy()
-            return
-    table=tb.search(query.ID!=[])
-    ids=[]
-    for i in table:
-        ids.append(i['ID'])
-    id= (max(ids))+1
-    Q1 = {'ID':id,'Question':Q,'Answer': A,'Points':int(P)}
-    qtb.insert(Q1)
-
-    messagebox.showinfo(title='Success', message='Question Added')
-    w.destroy()
