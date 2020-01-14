@@ -96,8 +96,8 @@ class testDB(unittest.TestCase): #unit test! of default users
     def test_par2(self):
         self.assertEqual(p2['child'],[3])
     
- if __name__ == '__main__': 
-    unittest.main() #start unit test 
+ #if __name__ == '__main__': 
+ #   unittest.main() #start unit test 
 
 #Insert 4 reords into our todo list database
 
