@@ -24,6 +24,13 @@ usr4 = {'ID':4,'Password':'4','Name': 'Chen','User':'Parent', 'AerageOfWAs':0,'A
 usr5 = {'ID':5,'Password':'5','Name': 'Yaniv','User':'Manager', 'AerageOfWAs':0,'AerageOfSMs':0,'GamePlayed':0,'ParentID':0}
 usr6 = {'ID':6,'Password':'6','Name': 'Itay','User':'Parent', 'AerageOfWAs':0,'AerageOfSMs':0,'GamePlayed':0,'ParentID':4}
 
+#unit test!
+class testDB(unittest.TestCase):
+    #testing test
+    def test1(self): 
+        self.assertEqual(1,1)
+    def test2(self):
+        self.assertNotEqual(1,5)
 
 
 #Insert 4 reords into our todo list database
