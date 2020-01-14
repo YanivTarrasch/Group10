@@ -53,7 +53,8 @@ class testDB(unittest.TestCase):
         self.assertNotIn({'ID':7,'Question':'Who are You?? ','Answer': 'im IronMan!!!!!','Points':3},tbq)
     def test_Not_Q4(self):
         self.assertNotIn({'ID':1,'Question':'Who we gonna call?? ','Answer': 'GhostBusters!','Points':3},tbq)
-    
+    def test_Not_Q5(self):
+        self.assertNotIn({'ID':2,'Question':'what is the first rule in fightClub? ','Answer': 'You dont talk about fightClub','Points':3},tbq) 
 
 
 
