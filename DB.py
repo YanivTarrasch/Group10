@@ -11,12 +11,12 @@ def getConnection(str):
 
 db=getConnection('Game')
 #db=getConnection('myDB')
-tb=db.table('User')
-tbq=db.table('Questions')
-tbp=db.table('Parent')
+tb=db.table('User') #user table
+tbq=db.table('Questions') #Question table
+tbp=db.table('Parent') #parent table
 
 
-
+#default users
 usr1 = {'ID':1,'Password':'1','Name': 'Avi','User':'Player', 'AerageOfWAs': 0,'AerageOfSMs':0,'GamePlayed':0,'ParentID':4}
 usr2 = {'ID':2,'Password':'2','Name': 'Yossi','User':'Player', 'AerageOfWAs': 0,'AerageOfSMs':0,'GamePlayed':0,'ParentID':4}
 usr3 = {'ID':3,'Password':'3','Name': 'Natan','User':'Player', 'AerageOfWAs':0,'AerageOfSMs':0,'GamePlayed':0,'ParentID':6}
@@ -25,7 +25,7 @@ usr5 = {'ID':5,'Password':'5','Name': 'Yaniv','User':'Manager', 'AerageOfWAs':0,
 usr6 = {'ID':6,'Password':'6','Name': 'Itay','User':'Parent', 'AerageOfWAs':0,'AerageOfSMs':0,'GamePlayed':0,'ParentID':4}
 
 
-class testDB(unittest.TestCase): #unit test! of defult users 
+class testDB(unittest.TestCase): #unit test! of default users 
     #testing test
     def test1(self): 
         self.assertEqual(1,1)
