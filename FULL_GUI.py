@@ -7,7 +7,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
-def getConnection(str):
+def getConnection(str): #getting a connection to our DB
     db = TinyDB(str+'.json')
     return db
 
@@ -129,7 +129,7 @@ def login_command(wid): #Login Window, this is the GUI after the main menu that 
         wid.destroy()
         window.mainloop()
         
-def onClick(name,pwd,wind):
+def onClick(name,pwd,wind): 
      usr=Query()
      
      rs=tb.search((usr.Name == name) & (usr.Password==pwd))
@@ -150,7 +150,7 @@ def onClick(name,pwd,wind):
      else:
          loginError() 
     
-def parentView(parent):
+def parentView(parent):#GUI For parent to see childs info
     window=Tk()
    
     id=parent.id
