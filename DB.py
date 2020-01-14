@@ -37,9 +37,9 @@ class testDB(unittest.TestCase):
         self.assertIn(Q1,tbq)
     def test_Q2(self):
         self.assertIn(Q2,tbq)
-    def test_Q2(self):
+    def test_Q3(self):
         self.assertIn(Q3,tbq)
-    def test_Q2(self):
+    def test_Q4(self):
         self.assertIn(Q4,tbq)
     def test_Q5(self):
         self.assertIn(Q5,tbq)
