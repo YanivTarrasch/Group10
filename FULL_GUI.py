@@ -103,3 +103,6 @@ def ManagerView(parent):
     showStats(window,p)
     
     window.mainloop()
+
+homePage(0)
+time.sleep(11)
